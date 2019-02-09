@@ -105,7 +105,7 @@ public class Player {
 		//mouse movement
 		rotation.y += window.MOUSE_DELTA_X * 0.007;
 		rotation.x += window.MOUSE_DELTA_Y * 0.007;
-		rotation.x = (float) Math.min(Math.max(rotation.x, -0.9), 0.9);
+		rotation.x = (float) Math.min(Math.max(rotation.x, -1.2), 1.2);
 		window.MOUSE_DELTA_X = 0;
 		window.MOUSE_DELTA_Y = 0;
 		

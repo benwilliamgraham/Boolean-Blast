@@ -9,12 +9,13 @@ import org.lwjgl.BufferUtils;
 
 public class Block {
 	boolean collides = false;
-	float shade = 0f;
+	float shade;
 	ArrayList<Integer> faceIndices;
 	
-	Block(Boolean collides){
+	Block(Boolean collides, Map map){
 		this.collides = collides;
 		faceIndices = new ArrayList<Integer>();
+		shade = map.darkShade;
 	}
 	
 	void updateShade(float shade, Map map) {

@@ -65,7 +65,7 @@ public class Particle {
 		
 		if(map.checkCollision(position)) {
 			if((int) (position.y + 0.5) != map.Y - 1) {
-				map.shadeBlock(position, 1.0f);
+				map.shadeBlock(position, map.lightShade);
 			}
 			return true;
 		}

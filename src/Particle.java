@@ -63,19 +63,11 @@ public class Particle {
 	boolean update(Map map) {
 		velocity.y -= map.gravity;
 		
-		if(map.checkCollision(new Vector3f(position).add(velocity.x, 0, 0))) {
-			velocity.x *= -0.5;
-		}
-		if(map.checkCollision(new Vector3f(position).add(0, velocity.y, 0))) {
-			if(Math.abs(velocity.y) + Math.abs(velocity.x) + Math.abs(velocity.z) < 0.1) {
-				return true;
+		if(map.checkCollision(position)) {
+			if((int) (position.y + 0.5) != map.Y - 1) {
+				map.shadeBlock(position, 1.0f);
 			}
-			velocity.x *= 0.7;
-			velocity.z *= 0.7;
-			velocity.y *= -0.5;
-		}
-		if(map.checkCollision(new Vector3f(position).add(0, 0, velocity.z))) {
-			velocity.z *= -0.5;
+			return true;
 		}
 		
 		position.add(velocity);

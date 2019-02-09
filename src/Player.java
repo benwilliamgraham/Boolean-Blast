@@ -14,6 +14,7 @@ import org.joml.Vector3f;
 public class Player {
 	Vector3f position;
 	float yVelocity = 0;
+	boolean shooting = false;
 	Vector3f rotation = new Vector3f(0f, 0f, 0f);
 	Camera camera;
 	
@@ -28,6 +29,10 @@ public class Player {
 			new Vector3f( radius.x, -radius.y,  radius.z),
 			new Vector3f( radius.x,  radius.y, -radius.z),
 			new Vector3f( radius.x,  radius.y,  radius.z),
+			new Vector3f(-radius.x, 0, -radius.z),
+			new Vector3f(-radius.x, 0,  radius.z),
+			new Vector3f( radius.x, 0, -radius.z),
+			new Vector3f( radius.x, 0,  radius.z),
 	};
 	
 	private static float ps = 0;
@@ -142,6 +147,20 @@ public class Player {
 		}
 
 		position.add(delta);
+		
+		//shooting
+		if(window.MOUSE_LCLICK) {
+			if(shooting == false) {
+				map.particles.add(new Bullet(new Vector3f(position.x, position.y + 1.4f, position.z), new Vector3f(
+					(float) (Math.sin(rotation.y) * Math.cos(rotation.x)), 
+					(float) -Math.sin(rotation.x), 
+					(float) (-Math.cos(rotation.y) * Math.cos(rotation.x))
+				)));
+				shooting = true;
+			}
+		} else {
+			shooting = false;
+		}
 		
 		//update camera
 		camera.updateVP(new Vector3f(position.x, position.y + 1.4f, position.z), rotation);

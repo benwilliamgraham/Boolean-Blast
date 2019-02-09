@@ -1,23 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
-
-	<classpathentry kind="lib" path="C:/Users/Ziyi/Desktop/TermProject/Boolean-Blast/lib/jar/AppleJavaExtensions.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ziyi/Desktop/TermProject/Boolean-Blast/lib/jar/asm-debug-all.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ziyi/Desktop/TermProject/Boolean-Blast/lib/jar/jinput.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ziyi/Desktop/TermProject/Boolean-Blast/lib/jar/laf-plugin-7.2.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ziyi/Desktop/TermProject/Boolean-Blast/lib/jar/laf-widget-7.2.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ziyi/Desktop/TermProject/Boolean-Blast/lib/jar/log4j-api-2.0-beta9.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ziyi/Desktop/TermProject/Boolean-Blast/lib/jar/lwjgl.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ziyi/Desktop/TermProject/Boolean-Blast/lib/jar/lwjgl_test.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ziyi/Desktop/TermProject/Boolean-Blast/lib/jar/lwjgl_util.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ziyi/Desktop/TermProject/Boolean-Blast/lib/jar/lwjgl_util_applet.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ziyi/Desktop/TermProject/Boolean-Blast/lib/jar/lwjgl-debug.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ziyi/Desktop/TermProject/Boolean-Blast/lib/jar/lzma.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ziyi/Desktop/TermProject/Boolean-Blast/lib/jar/substance-7.2.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Ziyi/Desktop/TermProject/Boolean-Blast/lib/jar/trident-7.2.1.jar"/>
-
 	<classpathentry kind="lib" path="lib/lwjgl 3.2.1/joml-1.9.12.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl 3.2.1/lwjgl-assimp-natives-windows.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl 3.2.1/lwjgl-assimp.jar"/>
@@ -31,10 +15,6 @@
 	<classpathentry kind="lib" path="lib/lwjgl 3.2.1/lwjgl-stb-natives-windows.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl 3.2.1/lwjgl-stb.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl 3.2.1/lwjgl.jar"/>
-<<<<<<< HEAD
 	<classpathentry kind="lib" path="lib/lwjgl 3.2.1/PNGDecoder.jar"/>
-
-=======
->>>>>>> parent of 400faec... GUI ready for filming
 	<classpathentry kind="output" path="bin"/>
 </classpath>

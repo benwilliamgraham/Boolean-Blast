@@ -99,23 +99,28 @@ public class Player {
 			input.x -= 1;
 		}
 		if(window.KEY_SPACE) {
-			input.y += 1;
+			input.y += 2;
 		}
+		
 		
 		//mouse movement
 		rotation.y += window.MOUSE_DELTA_X * 0.007;
 		rotation.x += window.MOUSE_DELTA_Y * 0.007;
-		rotation.x = (float) Math.min(Math.max(rotation.x, -0.9), 0.9);
+		rotation.x = (float) Math.min(Math.max(rotation.x, -1.2), 1.2);
 		window.MOUSE_DELTA_X = 0;
 		window.MOUSE_DELTA_Y = 0;
 		
 		//update position
+		float speed = 0.4f;
+		if(window.KEY_SHIFT) {
+			speed = .2f;
+		}
 		Vector3f delta = new Vector3f(
-				(float) (input.z * Math.sin(rotation.y) + input.x * Math.cos(rotation.y)) * 0.3f,
+				(float) (input.z * Math.sin(rotation.y) + input.x * Math.cos(rotation.y)) * speed,
 				yVelocity,
-				(float) (- input.z * Math.cos(rotation.y) + input.x * Math.sin(rotation.y)) * 0.3f
+				(float) (- input.z * Math.cos(rotation.y) + input.x * Math.sin(rotation.y)) * speed
 		);
-
+		
 		//check collisions
 		if(checkCollision(map, new Vector3f(delta.x, 0, 0))) {
 			if(!checkCollision(map, new Vector3f(delta.x, 1, 0))) {
@@ -134,8 +139,9 @@ public class Player {
 		
 		//handle jumping
 		if(checkCollision(map, new Vector3f(0, delta.y, 0))) {
-			if(input.y == 1 && yVelocity < 0) {
-				yVelocity = 0.4f;
+			if(input.y == 2 && yVelocity < 0) {
+				yVelocity = 0.5f;
+				yVelocity -= map.gravity;
 			}
 			else{
 				yVelocity = 0;
@@ -145,6 +151,31 @@ public class Player {
 		else {
 			yVelocity -= map.gravity;
 		}
+		
+//		//handle x movement
+//		if(checkCollision(map, new Vector3f(delta.x, 0, 0))) {
+//			if(input.x == 1 || input.x == -1) {
+//				if(input.x == 1 && xVelocity < .3f) {
+//					xVelocity += map.acceleration;
+//					}
+//				if(input.x == -1 && xVelocity < .3f) {
+//					xVelocity -= map.acceleration;
+//					}
+//			}
+//			else {
+//				xVelocity = 20;
+//			}
+//			if(xVelocity > 0) {
+//				xVelocity -= map.friction;
+//			}
+//			if(xVelocity < 0) {
+//				xVelocity += map.friction;
+//			}
+//			delta.x = xVelocity;
+//		}
+			
+		
+			
 
 		position.add(delta);
 		

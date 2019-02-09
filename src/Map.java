@@ -2,6 +2,7 @@ import static org.lwjgl.opengl.GL11.GL_LINES;
 import static org.lwjgl.opengl.GL11.GL_POLYGON_OFFSET_FILL;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL11.glEnable;
@@ -24,11 +25,24 @@ public class Map {
 	Model edges;
 	float[] shades;
 	
-	int X = 120, Y = 25, Z = 120;
+	int X = 120, Y = 33, Z = 120;
 	
 	Block[][][] blocks;
 	
 	float gravity = 0.03f;
+	float friction = 0.03f;
+	float acceleration = 0.5f; 
+	
+	Vector3f[] spawnPoints = {
+		new Vector3f(59, 3, 53),
+		new Vector3f(94, 13, 97),
+		new Vector3f(30, 13, 105)
+	};
+	
+	//colors
+	float lightShade = 0.85f;
+	float mediumShade = 0.3f;
+	float darkShade = 0.05f;
 	
 	//items
 	Camera activeCamera;
@@ -38,6 +52,7 @@ public class Map {
 	static Random random = new Random();
 	
 	Map(String filename){
+		glClearColor(mediumShade, mediumShade, mediumShade, 1.0f);
 		BufferedImage img = null;
 		try {
 		    img = ImageIO.read(new File(filename));
@@ -53,7 +68,7 @@ public class Map {
 		for(int z = 0; z < Z; z++) {
 			for(int y = 0; y < Y - 1; y++) {
 				for(int x = 0; x < X; x++) {
-					blocks[x][Y - y - 2][z] = new Block(img.getRGB(x, y * Z + z) == -1);
+					blocks[x][Y - y - 2][z] = new Block(img.getRGB(x, y * Z + z) == -1, this);
 				}
 			}
 		}
@@ -61,7 +76,7 @@ public class Map {
 		//add a roof
 		for(int z = 0; z < Z; z++) {
 			for(int x = 0; x < X; x++) {
-				blocks[x][Y - 1][z] = new Block(true);
+				blocks[x][Y - 1][z] = new Block(true, this);
 			}
 		}
 		
@@ -206,7 +221,6 @@ public class Map {
 		indexList = new ArrayList<Integer>();
 		
 		ni = 0;
-		float es = 0.3f;
 		int sv;
 		for(int z = 0; z < Z - 1; z++) {
 			for(int y = 0; y < Y - 1; y++) {
@@ -216,8 +230,8 @@ public class Map {
 					if(blocks[x][y][z].collides) sv += 0b1000; if(blocks[x][y + 1][z].collides) sv += 0b100; if(blocks[x + 1][y + 1][z].collides) sv += 0b10; if(blocks[x + 1][y][z].collides) sv += 0b1;
 					if(sv != 0b0 && sv != 0b11 && sv != 0b110 && sv != 0b1001 && sv != 0b1100 && sv != 0b1111) {
 						modelList.addAll(Arrays.asList(
-								x + 0.5f, y + 0.5f, z - 0.5f, es,
-								x + 0.5f, y + 0.5f, z + 0.5f, es
+								x + 0.5f, y + 0.5f, z - 0.5f, mediumShade,
+								x + 0.5f, y + 0.5f, z + 0.5f, mediumShade
 						));
 						
 						indexList.addAll(Arrays.asList(
@@ -230,8 +244,8 @@ public class Map {
 					if(blocks[x][y][z].collides) sv += 0b1000; if(blocks[x][y + 1][z].collides) sv += 0b100; if(blocks[x][y + 1][z + 1].collides) sv += 0b10; if(blocks[x][y][z + 1].collides) sv += 0b1;
 					if(sv != 0b0 && sv != 0b11 && sv != 0b110 && sv != 0b1001 && sv != 0b1100 && sv != 0b1111) {
 						modelList.addAll(Arrays.asList(
-								x - 0.5f, y + 0.5f, z + 0.5f, es,
-								x + 0.5f, y + 0.5f, z + 0.5f, es
+								x - 0.5f, y + 0.5f, z + 0.5f, mediumShade,
+								x + 0.5f, y + 0.5f, z + 0.5f, mediumShade
 						));
 						
 						indexList.addAll(Arrays.asList(
@@ -244,8 +258,8 @@ public class Map {
 					if(blocks[x][y][z].collides) sv += 0b1000; if(blocks[x + 1][y][z].collides) sv += 0b100; if(blocks[x + 1][y][z + 1].collides) sv += 0b10; if(blocks[x][y][z + 1].collides) sv += 0b1;
 					if(sv != 0b0 && sv != 0b11 && sv != 0b110 && sv != 0b1001 && sv != 0b1100 && sv != 0b1111) {
 						modelList.addAll(Arrays.asList(
-								x + 0.5f, y - 0.5f, z + 0.5f, es,
-								x + 0.5f, y + 0.5f, z + 0.5f, es
+								x + 0.5f, y - 0.5f, z + 0.5f, mediumShade,
+								x + 0.5f, y + 0.5f, z + 0.5f, mediumShade
 						));
 						
 						indexList.addAll(Arrays.asList(
@@ -268,8 +282,8 @@ public class Map {
 		edges = new Model(model, indices);
 	}
 	
-	void initializeItems(Window window) {		
-		player = new Player(window, new Vector3f(3, 3, 3));
+	void initializeItems(Window window) {
+		player = new Player(window, spawnPoints[random.nextInt(spawnPoints.length)]);
 		activeCamera = player.camera;
 	}
 	

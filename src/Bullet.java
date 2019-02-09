@@ -14,8 +14,8 @@ public class Bullet extends Particle {
 			
 			if(map.checkCollision(position)) {
 				if((int) (position.y + 0.5) != map.Y - 1) {
-					map.shadeBlock(position, 1.0f);
-					map.addParticles(position.sub(velocity), 16, 0.5f);
+					map.shadeBlock(position, map.lightShade);
+					map.addParticles(position.sub(velocity), 16, 0.3f);
 				}
 				return true;
 			}

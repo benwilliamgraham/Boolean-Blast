@@ -147,6 +147,7 @@ public class Player {
 			}
 			else{
 				yVelocity = 0;
+				
 			}
 			delta.y = yVelocity;
 		}

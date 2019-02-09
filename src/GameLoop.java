@@ -21,6 +21,11 @@ public class GameLoop {
 		double lastTime = glfwGetTime();
 				
 		while (!glfwWindowShouldClose(window.id)) {
+			System.out.print(Audio_Player.drip.isPlaying());
+//			if (!Audio_Player.drip.isPlaying()) {
+//				Audio_Player.drip.play();
+//			}
+			
 			//check events
 			glfwPollEvents();
 			

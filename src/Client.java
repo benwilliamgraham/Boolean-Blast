@@ -43,14 +43,16 @@ public class Client implements Runnable{
         
         //setup map with info
         map.load("assets/map1.png");
-		int enemyCount = in.readInt();
+		int playerCount = in.readInt();
 		int id = in.readInt();
-		map.players = new Player[enemyCount];
-		for(int e = 0; e < enemyCount; e++) {
-			map.players[e] = new Player(e);
+		map.players = new Player[playerCount];
+		for(int e = 0; e < playerCount; e++) {
+			map.players[e] = new Player(e, this);
 		}
 		map.player = map.players[id];
-		map.player.position = Map.spawnPoints[id];
+		if (playerCount == 1) playerCount++;
+		map.numPlayers = playerCount;
+		map.player.position = new Vector3f(Map.spawnPoints[id]);
 		map.addParticles(new Vector3f(map.player.position), 12, 0.3f);
     }
     
@@ -68,7 +70,11 @@ public class Client implements Runnable{
 			while(active){
 				//receive input
 				float[] input = (float[]) in.readObject();
-				if(input[0] == -1) {
+				if(input[0] == 666) {
+					map.numPlayers--;
+					if (map.numPlayers == 1) map.player.mode = Mode.WIN;
+				}
+				else if(input[0] == -1) {
 					map.particles.add(new Bullet(new Vector3f(input[1], input[2], input[3]), new Vector3f(input[4], input[5], input[6]), true));
 				}
 				else if(input[0] >= 0) {

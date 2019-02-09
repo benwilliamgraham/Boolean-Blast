@@ -72,7 +72,7 @@ public class GameLoop {
 			
 			//clear
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+			
 			//update
 			map.update(window, client);
 			

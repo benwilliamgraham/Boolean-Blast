@@ -55,6 +55,7 @@ public class Map {
 	Camera activeCamera = new Camera();
 	Player player;
 	Player[] players;
+	int numPlayers;
 	ArrayList<Particle> particles = new ArrayList<Particle>();
 	static Random random = new Random(420);
 	
@@ -322,8 +323,9 @@ public class Map {
 	}
 	
 	void update(Window window, Client client) {
+		if(player.mode == Mode.WIN || player.mode == Mode.LOSE) return;
 		//update everything
-		player.update(window, this, client);
+		player.update(window, this);
 		for(int i = particles.size() - 1; i >= 0; i--) {
 			if(particles.get(i).update(this)) {
 				particles.remove(i);
@@ -378,6 +380,14 @@ public class Map {
 		else if(player.mode == Mode.DIE) {
 			die.position = new Vector3f(0, 0, 0.8f);
 			die.render(camera, GUIProgram);
+		}
+		else if(player.mode == Mode.LOSE) {
+			lose.position = new Vector3f(0, 0, 0.8f);
+			lose.render(camera, GUIProgram);
+		}
+		else if(player.mode == Mode.WIN) {
+			win.position = new Vector3f(0, 0, 0.8f);
+			win.render(camera, GUIProgram);
 		}
 		
 		glEnable(GL_DEPTH_TEST);

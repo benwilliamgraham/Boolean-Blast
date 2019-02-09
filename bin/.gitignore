@@ -1,4 +1,5 @@
 /Block.class
+/Bullet.class
 /Camera.class
 /GameLoop.class
 /Map.class
@@ -8,4 +9,6 @@
 /ShaderProgram.class
 /Window.class
 /shader/
-/Bullet.class
+/ClientThread.class
+/Test1.class
+/Test2.class

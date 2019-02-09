@@ -6,13 +6,17 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+enum Mode{
+	PLAY, WIN, LOSE, DIE
+}
+
 public class Player {
 	int id;
 	
-	boolean dead = false;
 	int lives = 3;
 	
 	int ammo = 30;
+	Mode mode = Mode.PLAY;
 	
 	Player(int id){
 		this.id = id;
@@ -82,126 +86,136 @@ public class Player {
 		return false;
 	}
 	
+	void die() {
+		mode = Mode.DIE;
+		lives -= 1;
+	}
+	
 	void update(Window window, Map map, Client client) {
-		if(dead) {
-			System.exit(0);
-		}
-		
-		Vector3f input = new Vector3f(0, 0, 0);
-		
-		//key movement
-		if(window.KEY_UP) {
-			input.z += 1;
-		}
-		else if(window.KEY_DOWN) {
-			input.z -= 1;
-		}
-		if(window.KEY_RIGHT) {
-			input.x += 1;
-		}
-		else if(window.KEY_LEFT) {
-			input.x -= 1;
-		}
-		if(window.KEY_SPACE) {
-			input.y += 2;
-		}
-		
-		
-		//mouse movement
-		rotation.y += window.MOUSE_DELTA_X * 0.007;
-		rotation.x += window.MOUSE_DELTA_Y * 0.007;
-		rotation.x = (float) Math.min(Math.max(rotation.x, -1.2), 1.2);
-		window.MOUSE_DELTA_X = 0;
-		window.MOUSE_DELTA_Y = 0;
-		
-		//update position
-		float speed = 0.4f;
-		if(window.KEY_SHIFT) {
-			speed = .2f;
-		}
-		Vector3f delta = new Vector3f(
-				(float) (input.z * Math.sin(rotation.y) + input.x * Math.cos(rotation.y)) * speed,
-				yVelocity,
-				(float) (- input.z * Math.cos(rotation.y) + input.x * Math.sin(rotation.y)) * speed
-		);
-		
-		//check collisions
-		if(checkCollision(map, new Vector3f(delta.x, 0, 0))) {
-			if(!checkCollision(map, new Vector3f(delta.x, 1, 0))) {
-				delta.y += 1.1;
-			}else {
-				delta.x = 0;
+		if(mode == Mode.DIE) {
+			if(window.KEY_R) {
+				position = new Vector3f(Map.spawnPoints[0]);
+				mode = Mode.PLAY;
 			}
-		}
-		if(checkCollision(map, new Vector3f(0, 0, delta.z))) { 
-			if(!checkCollision(map, new Vector3f(0, 1, delta.z))) {
-				delta.y += 1.1;
-			}else {
-				delta.z = 0;
-			}
-		}
-		
-		//handle jumping
-		if(checkCollision(map, new Vector3f(0, delta.y, 0))) {
-			if(input.y == 2 && yVelocity < 0) {
-				yVelocity = 0.5f;
-				yVelocity -= map.gravity;
-			}
-			else{
-				yVelocity = 0;
-			}
-			delta.y = yVelocity;
 		}
 		else {
-			yVelocity -= map.gravity;
-		}
-
-		position.add(delta);
-		
-		//shooting
-		if(window.MOUSE_LCLICK) {
-			if(shooting == false && ammo > 0) {
-				Vector3f bulletVelocity = new Vector3f(
-						(float) (Math.sin(rotation.y) * Math.cos(rotation.x)), 
-						(float) -Math.sin(rotation.x), 
-						(float) (-Math.cos(rotation.y) * Math.cos(rotation.x))
-				);
-				map.particles.add(new Bullet(new Vector3f(position.x, position.y + 1.4f, position.z), bulletVelocity, false));
-				float[] data = {-1, position.x, position.y + 1.4f, position.z, bulletVelocity.x, bulletVelocity.y, bulletVelocity.z};
-				client.sendData(data);
-				shooting = true;
-				ammo -= 1;
+			
+			Vector3f input = new Vector3f(0, 0, 0);
+			
+			//key movement
+			if(window.KEY_UP) {
+				input.z += 1;
 			}
-		} else {
-			shooting = false;
-		}
-		if(window.MOUSE_RCLICK) {
-			if(ammo < 50) {
-				Vector3f lookVector = new Vector3f(
-						(float) (Math.sin(rotation.y) * Math.cos(rotation.x)), 
-						(float) -Math.sin(rotation.x), 
-						(float) (-Math.cos(rotation.y) * Math.cos(rotation.x))
-				);
-				for(int i = 0; i < 8; i++) {
-					Vector3f checkPosition = new Vector3f(position.x, position.y + 1.4f, position.z).add(new Vector3f(lookVector).mul(i));
-					if(map.checkCollision(checkPosition)) {
-						if(map.getBlockShade(checkPosition) == Map.lightShade) {
-							map.shadeBlock(checkPosition, Map.darkShade);
-							ammo += 1;
+			else if(window.KEY_DOWN) {
+				input.z -= 1;
+			}
+			if(window.KEY_RIGHT) {
+				input.x += 1;
+			}
+			else if(window.KEY_LEFT) {
+				input.x -= 1;
+			}
+			if(window.KEY_SPACE) {
+				input.y += 2;
+			}
+			
+			
+			//mouse movement
+			rotation.y += window.MOUSE_DELTA_X * 0.007;
+			rotation.x += window.MOUSE_DELTA_Y * 0.007;
+			rotation.x = (float) Math.min(Math.max(rotation.x, -1.2), 1.2);
+			window.MOUSE_DELTA_X = 0;
+			window.MOUSE_DELTA_Y = 0;
+			
+			//update position
+			float speed = 0.4f;
+			if(window.KEY_SHIFT) {
+				speed = .2f;
+			}
+			Vector3f delta = new Vector3f(
+					(float) (input.z * Math.sin(rotation.y) + input.x * Math.cos(rotation.y)) * speed,
+					yVelocity,
+					(float) (- input.z * Math.cos(rotation.y) + input.x * Math.sin(rotation.y)) * speed
+			);
+			
+			//check collisions
+			if(checkCollision(map, new Vector3f(delta.x, 0, 0))) {
+				if(!checkCollision(map, new Vector3f(delta.x, 1, 0))) {
+					delta.y += 1.1;
+				}else {
+					delta.x = 0;
+				}
+			}
+			if(checkCollision(map, new Vector3f(0, 0, delta.z))) { 
+				if(!checkCollision(map, new Vector3f(0, 1, delta.z))) {
+					delta.y += 1.1;
+				}else {
+					delta.z = 0;
+				}
+			}
+			
+			//handle jumping
+			if(checkCollision(map, new Vector3f(0, delta.y, 0))) {
+				if(input.y == 2 && yVelocity < 0) {
+					yVelocity = 0.5f;
+					yVelocity -= map.gravity;
+				}
+				else{
+					yVelocity = 0;
+				}
+				delta.y = yVelocity;
+			}
+			else {
+				yVelocity -= map.gravity;
+			}
+	
+			position.add(delta);
+			
+			//shooting
+			if(window.MOUSE_LCLICK) {
+				if(shooting == false && ammo > 0) {
+					Vector3f bulletVelocity = new Vector3f(
+							(float) (Math.sin(rotation.y) * Math.cos(rotation.x)), 
+							(float) -Math.sin(rotation.x), 
+							(float) (-Math.cos(rotation.y) * Math.cos(rotation.x))
+					);
+					map.particles.add(new Bullet(new Vector3f(position.x, position.y + 1.4f, position.z), bulletVelocity, false));
+					float[] data = {-1, position.x, position.y + 1.4f, position.z, bulletVelocity.x, bulletVelocity.y, bulletVelocity.z};
+					client.sendData(data);
+					shooting = true;
+					ammo -= 1;
+				}
+			} else {
+				shooting = false;
+			}
+			if(window.MOUSE_RCLICK) {
+				if(ammo < 50) {
+					Vector3f lookVector = new Vector3f(
+							(float) (Math.sin(rotation.y) * Math.cos(rotation.x)), 
+							(float) -Math.sin(rotation.x), 
+							(float) (-Math.cos(rotation.y) * Math.cos(rotation.x))
+					);
+					for(int i = 0; i < 8; i++) {
+						Vector3f checkPosition = new Vector3f(position.x, position.y + 1.4f, position.z).add(new Vector3f(lookVector).mul(i));
+						if(map.checkCollision(checkPosition)) {
+							if(map.getBlockShade(checkPosition) == Map.lightShade) {
+								map.shadeBlock(checkPosition, Map.darkShade);
+								ammo += 1;
+							}
+							break;
 						}
-						break;
 					}
 				}
 			}
-		}
-		
-		//update camera
-		map.activeCamera.updateVP(new Vector3f(position.x, position.y + 1.4f, position.z), rotation);
-		
-		//update server
-		if(delta.x != 0 || delta.y != 0 || delta.z != 0) {
-			float[] data = {id, position.x, position.y, position.z};
-			client.sendData(data);
+			
+			//update camera
+			map.activeCamera.updateVP(new Vector3f(position.x, position.y + 1.4f, position.z), rotation);
+			
+			//update server
+			if(delta.x != 0 || delta.y != 0 || delta.z != 0) {
+				float[] data = {id, position.x, position.y, position.z};
+				client.sendData(data);
+			}
 		}
 	}
 	

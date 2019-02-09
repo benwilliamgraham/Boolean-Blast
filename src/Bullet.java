@@ -25,7 +25,7 @@ public class Bullet extends Particle {
 			if( lethal && Math.abs(map.player.position.x - position.x) < Player.radius.x &&
 				Math.abs(map.player.position.y - position.y) < Player.radius.y &&
 				Math.abs(map.player.position.z - position.z) < Player.radius.z) {
-				map.player.dead = true;
+				map.player.die();
 			}
 		}
 		return false;

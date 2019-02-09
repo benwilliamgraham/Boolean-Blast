@@ -13,6 +13,7 @@ public class Window {
 	
 	boolean KEY_UP = false, KEY_DOWN = false, KEY_LEFT = false, KEY_RIGHT = false, 
 			KEY_SPACE = false, KEY_SHIFT = false, 
+			KEY_R = false,
 			MOUSE_LCLICK = false, MOUSE_RCLICK = false,
 			MOUSE_LOCKED = false;
 	double MOUSE_X = 0, MOUSE_Y = 0, MOUSE_DELTA_X = 0, MOUSE_DELTA_Y = 0;
@@ -62,6 +63,10 @@ public class Window {
 			//right
 			if(key == GLFW_KEY_D && action == GLFW_PRESS) KEY_RIGHT = true;
 			else if(key == GLFW_KEY_D && action == GLFW_RELEASE) KEY_RIGHT = false;
+			
+			//r
+			if(key == GLFW_KEY_R && action == GLFW_PRESS) KEY_R = true;
+			else if(key == GLFW_KEY_R && action == GLFW_RELEASE) KEY_R = false;
 			
 			//space
 			if(key == GLFW_KEY_SPACE && action == GLFW_PRESS) KEY_SPACE = true;

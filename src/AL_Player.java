@@ -9,7 +9,7 @@ public class AL_Player {
 	public static ArrayList<Integer> buffers = new ArrayList<Integer>();
 	
 	public static void init() {
-		AL.createCapabilities(null);
+		AL.create();
 	
 	}
 	

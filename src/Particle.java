@@ -12,9 +12,9 @@ public class Particle {
 	Vector3f position;
 	Vector3f velocity;
 	
-	private static float ps = 1;
-	private static Vector3f radius = new Vector3f(0.1f, 0.1f, 0.1f);
-	private static float[] vertices = {
+	static float ps = 1;
+	static Vector3f radius = new Vector3f(0.1f, 0.1f, 0.1f);
+	static float[] vertices = {
 		-radius.x, -radius.y, -radius.z, ps,
 		-radius.x, -radius.y,  radius.z, ps,
 		-radius.x,  radius.y, -radius.z, ps,
@@ -24,7 +24,7 @@ public class Particle {
 		 radius.x,  radius.y, -radius.z, ps,
 		 radius.x,  radius.y,  radius.z, ps,
 	};
-	private static int[] indices = {
+	static int[] indices = {
 		//x-
 		3, 2, 0,
 		1, 3, 0,
@@ -65,7 +65,7 @@ public class Particle {
 		
 		if(map.checkCollision(position)) {
 			if((int) (position.y + 0.5) != map.Y - 1) {
-				map.shadeBlock(position, map.lightShade);
+				map.shadeBlock(position, Map.lightShade);
 			}
 			return true;
 		}

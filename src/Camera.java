@@ -5,8 +5,8 @@ public class Camera {
 	Matrix4f projectionMatrix;
 	Matrix4f VP;
 	
-	Camera(Window window){
-		projectionMatrix = new Matrix4f().perspective((float) Math.toRadians(70.0f), (float) window.width / (float) window.height, 0.001f, 1000f);
+	Camera(){
+		projectionMatrix = new Matrix4f().perspective((float) Math.toRadians(70.0f), (float) Window.width / (float) Window.height, 0.001f, 1000f);
 	}
 	
 	void updateVP(Vector3f position, Vector3f rotation) {

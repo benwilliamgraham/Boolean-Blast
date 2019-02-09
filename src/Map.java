@@ -2,7 +2,6 @@ import static org.lwjgl.opengl.GL11.GL_LINES;
 import static org.lwjgl.opengl.GL11.GL_POLYGON_OFFSET_FILL;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
-import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL11.glEnable;
@@ -21,6 +20,8 @@ import javax.imageio.ImageIO;
 import org.joml.Vector3f;
 
 public class Map {
+	boolean locked = false;
+	
 	Model faces;
 	Model edges;
 	float[] shades;
@@ -33,26 +34,23 @@ public class Map {
 	float friction = 0.03f;
 	float acceleration = 0.5f; 
 	
-	Vector3f[] spawnPoints = {
+	static Vector3f[] spawnPoints = {
 		new Vector3f(59, 3, 53),
 		new Vector3f(94, 13, 97),
 		new Vector3f(30, 13, 105)
 	};
 	
 	//colors
-	float lightShade = 0.85f;
-	float mediumShade = 0.3f;
-	float darkShade = 0.05f;
+	static float lightShade = 0.85f, mediumShade = 0.3f, darkShade = 0.05f;
 	
 	//items
-	Camera activeCamera;
+	Camera activeCamera = new Camera();
 	Player player;
-	ArrayList<Player> enemies = new ArrayList<Player>();
+	Player[] players;
 	ArrayList<Particle> particles = new ArrayList<Particle>();
-	static Random random = new Random();
+	static Random random = new Random(420);
 	
-	Map(String filename){
-		glClearColor(mediumShade, mediumShade, mediumShade, 1.0f);
+	void load(String filename){
 		BufferedImage img = null;
 		try {
 		    img = ImageIO.read(new File(filename));
@@ -282,11 +280,6 @@ public class Map {
 		edges = new Model(model, indices);
 	}
 	
-	void initializeItems(Window window) {
-		player = new Player(window, spawnPoints[random.nextInt(spawnPoints.length)]);
-		activeCamera = player.camera;
-	}
-	
 	boolean checkCollision(Vector3f position) {
 		return  (int)(position.x + 0.5f) < 0 ||
 				(int)(position.x + 0.5f) >= X ||
@@ -307,12 +300,9 @@ public class Map {
 		}
 	}
 	
-	void update(Window window) {
+	void update(Window window, Client client) {
 		//update everything
-		player.update(window, this);
-		for(Player enemy: enemies) {
-			//enemy.update(this);
-		}
+		player.update(window, this, client);
 		for(int i = particles.size() - 1; i >= 0; i--) {
 			if(particles.get(i).update(this)) {
 				particles.remove(i);
@@ -321,6 +311,7 @@ public class Map {
 	}
 	
 	void render(Camera camera, ShaderProgram shaderProgram) {
+		locked = true;
 		shaderProgram.start();
 		
 		//setup
@@ -338,11 +329,13 @@ public class Map {
 		glDrawElements(GL_TRIANGLES, faces.index_count, GL_UNSIGNED_INT, 0);
 		
 		//draw items
-		for(Player enemy: enemies) {
-			enemy.render(activeCamera, shaderProgram);
+		for(int i = 0; i < players.length; i++) {
+			if(player.id == i || players[i] == null) continue;
+			players[i].render(activeCamera, shaderProgram);
 		}
 		for(Particle particle: particles) {
 			particle.render(activeCamera, shaderProgram);
 		}
+		locked = false;
 	}
 }

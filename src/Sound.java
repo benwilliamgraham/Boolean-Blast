@@ -6,7 +6,6 @@ public enum Sound {
 	GONG("assets/bang.wav"),
 	SHOOT("assets/bang.wav");
 	
-	
 	float volume = 1;
 	InputStream audioFile;
 	Sound(String filename){
@@ -23,7 +22,6 @@ public enum Sound {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	static void init() {

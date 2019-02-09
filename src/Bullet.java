@@ -2,8 +2,11 @@ import org.joml.Vector3f;
 
 public class Bullet extends Particle {
 
-	Bullet(Vector3f position, Vector3f velocity) {
+	boolean lethal;
+	
+	Bullet(Vector3f position, Vector3f velocity, boolean lethal) {
 		super(position, velocity);
+		this.lethal = lethal;
 	}
 
 	@Override
@@ -14,10 +17,15 @@ public class Bullet extends Particle {
 			
 			if(map.checkCollision(position)) {
 				if((int) (position.y + 0.5) != map.Y - 1) {
-					map.shadeBlock(position, map.lightShade);
+					map.shadeBlock(position, Map.lightShade);
 					map.addParticles(position.sub(velocity), 16, 0.3f);
 				}
 				return true;
+			}
+			if( lethal && Math.abs(map.player.position.x - position.x) < Player.radius.x &&
+				Math.abs(map.player.position.y - position.y) < Player.radius.y &&
+				Math.abs(map.player.position.z - position.z) < Player.radius.z) {
+				map.player.dead = true;
 			}
 		}
 		return false;

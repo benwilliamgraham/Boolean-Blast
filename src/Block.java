@@ -15,7 +15,7 @@ public class Block {
 	Block(Boolean collides, Map map){
 		this.collides = collides;
 		faceIndices = new ArrayList<Integer>();
-		shade = map.darkShade;
+		shade = Map.darkShade;
 	}
 	
 	void updateShade(float shade, Map map) {

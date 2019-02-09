@@ -2,13 +2,14 @@ import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL40.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 public class Window {
 	long id;
 	
-	int width = 1800, height = 900;
+	static int width = 1800, height = 900;
 	
 	boolean KEY_UP = false, KEY_DOWN = false, KEY_LEFT = false, KEY_RIGHT = false, 
 			KEY_SPACE = false, KEY_SHIFT = false, 
@@ -16,7 +17,7 @@ public class Window {
 			MOUSE_LOCKED = false;
 	double MOUSE_X = 0, MOUSE_Y = 0, MOUSE_DELTA_X = 0, MOUSE_DELTA_Y = 0;
 	
-	void init() {
+	Window(Map map) {
 		//will print any errors that occur
 		GLFWErrorCallback.createPrint(System.err).set();
 		
@@ -31,7 +32,7 @@ public class Window {
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 		
 		//create the window
-		id = glfwCreateWindow(width, height, "Benjine3D", NULL, NULL);
+		id = glfwCreateWindow(width, height, "Boolean Blast!", NULL, NULL);
 		if(id == NULL) throw new RuntimeException("Failed to create the GLFW window");
 		
 		//setup key callbacks
@@ -72,8 +73,6 @@ public class Window {
 		});
 		
 		//setup mouse movement callbacks
-		glfwSetInputMode(id, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-		MOUSE_LOCKED = true;
 		glfwSetCursorPosCallback(id, (window, xpos, ypos) -> {
 			MOUSE_DELTA_X = xpos - MOUSE_X;
 			MOUSE_DELTA_Y = ypos - MOUSE_Y;
@@ -100,6 +99,7 @@ public class Window {
 		
 		//set the OpenGL properties
 		GL.createCapabilities();
+		glClearColor(Map.mediumShade, Map.mediumShade, Map.mediumShade, 1.0f);
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_LINE_SMOOTH);

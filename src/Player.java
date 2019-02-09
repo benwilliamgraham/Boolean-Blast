@@ -1,25 +1,28 @@
-import static org.lwjgl.opengl.GL11.GL_LINES;
-import static org.lwjgl.opengl.GL11.GL_POLYGON_OFFSET_FILL;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
-import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glDrawElements;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glPolygonOffset;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 public class Player {
-	Vector3f position;
+	int id;
+	
+	boolean dead = false;
+	int lives = 3;
+	
+	Player(int id){
+		this.id = id;
+	}
+	
+	Vector3f position = new Vector3f(0, 0, 0);
 	float yVelocity = 0;
 	boolean shooting = false;
 	Vector3f rotation = new Vector3f(0f, 0f, 0f);
-	Camera camera;
 	
 	//do all constant things
-	private static Vector3f radius = new Vector3f(0.5f, 1.5f, 0.5f);
+	static Vector3f radius = new Vector3f(0.5f, 1.5f, 0.5f);
 	private static Vector3f[] faceMesh = {
 			new Vector3f(-radius.x, -radius.y, -radius.z),
 			new Vector3f(-radius.x, -radius.y,  radius.z),
@@ -35,7 +38,7 @@ public class Player {
 			new Vector3f( radius.x, 0,  radius.z),
 	};
 	
-	private static float ps = 0;
+	private static float ps = Map.darkShade;
 	private static float[] vertices = {
 		faceMesh[0].x, faceMesh[0].y, faceMesh[0].z, ps,
 		faceMesh[1].x, faceMesh[1].y, faceMesh[1].z, ps,
@@ -68,11 +71,6 @@ public class Player {
 	};
 	private static Model model = new Model(vertices, indices);
 	
-	Player(Window window, Vector3f position){
-		this.position = position;
-		camera = new Camera(window);
-	}
-	
 	boolean checkCollision(Map map, Vector3f delta) {
 		for(Vector3f point : faceMesh) {
 			if(map.checkCollision(new Vector3f(position).add(delta).add(point))) {
@@ -82,7 +80,11 @@ public class Player {
 		return false;
 	}
 	
-	void update(Window window, Map map) {
+	void update(Window window, Map map, Client client) {
+		if(dead) {
+			System.exit(0);
+		}
+		
 		Vector3f input = new Vector3f(0, 0, 0);
 		
 		//key movement
@@ -151,42 +153,20 @@ public class Player {
 		else {
 			yVelocity -= map.gravity;
 		}
-		
-//		//handle x movement
-//		if(checkCollision(map, new Vector3f(delta.x, 0, 0))) {
-//			if(input.x == 1 || input.x == -1) {
-//				if(input.x == 1 && xVelocity < .3f) {
-//					xVelocity += map.acceleration;
-//					}
-//				if(input.x == -1 && xVelocity < .3f) {
-//					xVelocity -= map.acceleration;
-//					}
-//			}
-//			else {
-//				xVelocity = 20;
-//			}
-//			if(xVelocity > 0) {
-//				xVelocity -= map.friction;
-//			}
-//			if(xVelocity < 0) {
-//				xVelocity += map.friction;
-//			}
-//			delta.x = xVelocity;
-//		}
-			
-		
-			
 
 		position.add(delta);
 		
 		//shooting
 		if(window.MOUSE_LCLICK) {
 			if(shooting == false) {
-				map.particles.add(new Bullet(new Vector3f(position.x, position.y + 1.4f, position.z), new Vector3f(
-					(float) (Math.sin(rotation.y) * Math.cos(rotation.x)), 
-					(float) -Math.sin(rotation.x), 
-					(float) (-Math.cos(rotation.y) * Math.cos(rotation.x))
-				)));
+				Vector3f bulletVelocity = new Vector3f(
+						(float) (Math.sin(rotation.y) * Math.cos(rotation.x)), 
+						(float) -Math.sin(rotation.x), 
+						(float) (-Math.cos(rotation.y) * Math.cos(rotation.x))
+				);
+				map.particles.add(new Bullet(new Vector3f(position.x, position.y + 1.4f, position.z), bulletVelocity, false));
+				float[] data = {-1, position.x, position.y + 1.4f, position.z, bulletVelocity.x, bulletVelocity.y, bulletVelocity.z};
+				client.sendData(data);
 				shooting = true;
 			}
 		} else {
@@ -194,7 +174,13 @@ public class Player {
 		}
 		
 		//update camera
-		camera.updateVP(new Vector3f(position.x, position.y + 1.4f, position.z), rotation);
+		map.activeCamera.updateVP(new Vector3f(position.x, position.y + 1.4f, position.z), rotation);
+		
+		//update server
+		if(delta.x != 0 || delta.y != 0 || delta.z != 0) {
+			float[] data = {id, position.x, position.y, position.z};
+			client.sendData(data);
+		}
 	}
 	
 	void render(Camera camera, ShaderProgram shaderProgram){

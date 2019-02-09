@@ -16,11 +16,14 @@ public class GameLoop {
 		
 		//create shaders
 		ShaderProgram shaderProgram = new ShaderProgram("src/shader/3d.vertex", "src/shader/3d.fragment");
+		ShaderProgram GUIProgram = new ShaderProgram("src/shader/2d.vertex", "src/shader/2d.fragment");
 		
 		//run gameloop
 		double lastTime = glfwGetTime();
 				
 		while (!glfwWindowShouldClose(window.id)) {
+			//AudioPlayer.hit.play();
+			
 			//check events
 			glfwPollEvents();
 			
@@ -31,7 +34,7 @@ public class GameLoop {
 			map.update(window, client);
 			
 			//draw
-			map.render(map.activeCamera, shaderProgram);
+			map.render(map.activeCamera, shaderProgram, GUIProgram);
 			
 			//show
 			glfwSwapBuffers(window.id);

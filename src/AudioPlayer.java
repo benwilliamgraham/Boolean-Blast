@@ -1,20 +1,16 @@
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.AudioClip;
 
-public class Audio_Player {
+public class AudioPlayer {
 	
-	AudioClip drip = new AudioClip("assets/Drip.wav");
-	AudioClip explosion = new AudioClip("assets/Explosion.wav");
-	AudioClip fall = new AudioClip("assets/Falling_Sound.wav");
-	AudioClip hit = new AudioClip("assets/Hit_Sound.wav");
-	AudioClip shot = new AudioClip("assets/SHOT.wav");
-	AudioClip step_1 = new AudioClip("assets/Step_1.wav");
-	AudioClip step_2 = new AudioClip("assets/Step_2.wav");
+	static AudioClip drip = new AudioClip("assets/Drip.wav");
+	static AudioClip explosion = new AudioClip("assets/Explosion.wav");
+	static AudioClip fall = new AudioClip("assets/Falling_Sound.wav");
+	static AudioClip hit = new AudioClip("assets/Hit_Sound.wav");
+	static AudioClip shot = new AudioClip("assets/SHOT.wav");
+	static AudioClip step_1 = new AudioClip("assets/Step_1.wav");
+	static AudioClip step_2 = new AudioClip("assets/Step_2.wav");
 	
 		
-
-
 	public void play_steps(float x_dist, float z_dist, float y_dist, float theta) {
 		float max_hear_dist = 20;
 		float total_dist = (x_dist + z_dist + y_dist) / 2;

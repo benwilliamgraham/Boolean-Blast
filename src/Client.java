@@ -67,7 +67,6 @@ public class Client implements Runnable{
 			while(active){
 				//receive input
 				float[] input = (float[]) in.readObject();
-				while(map.locked);
 				if(input[0] == -1) {
 					map.particles.add(new Bullet(new Vector3f(input[1], input[2], input[3]), new Vector3f(input[4], input[5], input[6]), true));
 				}

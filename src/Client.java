@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 
 import org.joml.Vector3f;
@@ -29,7 +30,7 @@ public class Client implements Runnable{
     	
     public void setup() throws IOException{
     	// Make connection and initialize streams
-    	String serverAddress = "128.237.178.223";
+    	String serverAddress = "128.237.181.58";
         socket = new Socket(serverAddress, 8001);
         out = new ObjectOutputStream(socket.getOutputStream());
         in = new ObjectInputStream(socket.getInputStream());

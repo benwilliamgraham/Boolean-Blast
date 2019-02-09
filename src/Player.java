@@ -92,15 +92,19 @@ public class Player {
 		//key movement
 		if(window.KEY_UP) {
 			input.z += 1;
+			AudioPlayer.Walk1();
 		}
 		else if(window.KEY_DOWN) {
 			input.z -= 1;
+			AudioPlayer.Walk1();
 		}
 		if(window.KEY_RIGHT) {
 			input.x += 1;
+			AudioPlayer.Walk1();
 		}
 		else if(window.KEY_LEFT) {
 			input.x -= 1;
+			AudioPlayer.Walk1();
 		}
 		if(window.KEY_SPACE) {
 			input.y += 2;

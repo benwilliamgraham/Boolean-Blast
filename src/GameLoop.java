@@ -22,7 +22,6 @@ public class GameLoop {
 		double lastTime = glfwGetTime();
 				
 		while (!glfwWindowShouldClose(window.id)) {
-			//AudioPlayer.hit.play();
 			
 			//check events
 			glfwPollEvents();

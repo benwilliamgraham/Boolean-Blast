@@ -177,7 +177,21 @@ public class Player {
 		}
 		if(window.MOUSE_RCLICK) {
 			if(ammo < 50) {
-				ammo += 1;
+				Vector3f lookVector = new Vector3f(
+						(float) (Math.sin(rotation.y) * Math.cos(rotation.x)), 
+						(float) -Math.sin(rotation.x), 
+						(float) (-Math.cos(rotation.y) * Math.cos(rotation.x))
+				);
+				for(int i = 0; i < 8; i++) {
+					Vector3f checkPosition = new Vector3f(position.x, position.y + 1.4f, position.z).add(new Vector3f(lookVector).mul(i));
+					if(map.checkCollision(checkPosition)) {
+						if(map.getBlockShade(checkPosition) == Map.lightShade) {
+							map.shadeBlock(checkPosition, Map.darkShade);
+							ammo += 1;
+						}
+						break;
+					}
+				}
 			}
 		}
 		

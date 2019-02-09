@@ -307,6 +307,10 @@ public class Map {
 				blocks[(int)(position.x + 0.5f)][(int)(position.y + 0.5f)][(int)(position.z + 0.5f)].collides;
 	}
 	
+	float getBlockShade(Vector3f position) {
+		return blocks[(int)(position.x + 0.5f)][(int)(position.y + 0.5f)][(int)(position.z + 0.5f)].shade;
+	}
+	
 	void shadeBlock(Vector3f position, float shade) {
 		blocks[(int)(position.x + 0.5f)][(int)(position.y + 0.5f)][(int)(position.z + 0.5f)].updateShade(shade, this);
 	}
@@ -367,7 +371,7 @@ public class Map {
 		cursor.position = new Vector3f(0, 0, -10);
 		cursor.render(camera, GUIProgram);
 		ammo.scale.x = Math.min(player.ammo / 5f, 10);
-		ammo.position = new Vector3f(-13 + ammo.scale.x * 0.44f, 7.4f, -10);
+		ammo.position = new Vector3f(-13 + ammo.scale.x * 0.438f, 7.4f, -10);
 		ammo.render(camera, GUIProgram);
 		
 		glEnable(GL_DEPTH_TEST);

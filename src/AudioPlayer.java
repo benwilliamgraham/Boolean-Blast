@@ -1,30 +1,50 @@
+import org.joml.Vector3f;
+import org.lwjgl.openal.AL10;
+
 import javafx.scene.media.AudioClip;
 
 public class AudioPlayer {
 	
-	static AudioClip drip = new AudioClip("assets/Drip.wav");
-	static AudioClip explosion = new AudioClip("assets/Explosion.wav");
-	static AudioClip fall = new AudioClip("assets/Falling_Sound.wav");
-	static AudioClip hit = new AudioClip("assets/Hit_Sound.wav");
-	static AudioClip shot = new AudioClip("assets/SHOT.wav");
-	static AudioClip step_1 = new AudioClip("assets/Step_1.wav");
-	static AudioClip step_2 = new AudioClip("assets/Step_2.wav");
+	static int drip = AudioMaster.loadSound("assets/Drip.wav");
+	static int explosion = AudioMaster.loadSound("assets/Explosion.wav");
+	static int fall = AudioMaster.loadSound("assets/Falling_Sound.wav");
+	static int hit = AudioMaster.loadSound("assets/Hit_Sound.wav");
+	static int shot = AudioMaster.loadSound("assets/SHOT.wav");
+	static int step1 = AudioMaster.loadSound("assets/Step_1.wav");
+	static int step2 = AudioMaster.loadSound("assets/Step_2.wav");
 	
-		
-	public void play_steps(float x_dist, float z_dist, float y_dist, float theta) {
-		float max_hear_dist = 20;
-		float total_dist = (x_dist + z_dist + y_dist) / 2;
-		
-		if (total_dist <= max_hear_dist) {
-		
-			float amplitude = (max_hear_dist - total_dist) / max_hear_dist;
-					
-			step_1.setVolume(amplitude);
-			step_2.setVolume(amplitude);
-			
-			step_1.play();
-			step_2.play();
-		}
+	SoundSource fromCharacterHit = new SoundSource();
+	SoundSource fromCharShoot = new SoundSource();
+	SoundSource fromCharacterExplode = new SoundSource();
+	SoundSource fromCharacterFall = new SoundSource();
+	static SoundSource fromCharacterWalk = new SoundSource();
+	SoundSource fromEnemy = new SoundSource();
+	SoundSource fromWorld = new SoundSource();
+	
+	public void dripSound(Vector3f worldPosition) {
+		AL10.alSource3f(fromWorld.getId(), AL10.AL_POSITION, worldPosition.x, worldPosition.y, worldPosition.z);
+		fromWorld.play(drip);
+	}
+	
+	public void fall() {
+		fromCharacterFall.play(fall);
+	}
+	
+	public void getShot() {
+		fromCharacterHit.play(hit);
+		fromCharacterExplode.play(explosion);
+	}
+	
+	public void shoot() {
+		fromCharShoot.stop(shot);
+		fromCharShoot.play(shot);
+	}
+	
+	public static void Walk1() {
+		fromCharacterWalk.play(step1);
+	}
+	public void Walk2() {
+		fromCharacterWalk.play(step2);
 	}
 }
 

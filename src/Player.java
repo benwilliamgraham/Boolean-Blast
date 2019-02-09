@@ -99,7 +99,7 @@ public class Player {
 			input.x -= 1;
 		}
 		if(window.KEY_SPACE) {
-			input.y += 1;
+			input.y += 2;
 		}
 		
 		//mouse movement
@@ -134,8 +134,9 @@ public class Player {
 		
 		//handle jumping
 		if(checkCollision(map, new Vector3f(0, delta.y, 0))) {
-			if(input.y == 1 && yVelocity < 0) {
-				yVelocity = 0.4f;
+			if(input.y == 2 && yVelocity < 0) {
+				yVelocity = 0.5f;
+				yVelocity -= map.gravity;
 			}
 			else{
 				yVelocity = 0;

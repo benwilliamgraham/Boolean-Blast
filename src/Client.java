@@ -29,7 +29,7 @@ public class Client implements Runnable{
     	
     public void setup() throws IOException{
     	// Make connection and initialize streams
-    	String serverAddress = "128.237.172.91";
+    	String serverAddress = "128.237.178.223";
         socket = new Socket(serverAddress, 8001);
         out = new ObjectOutputStream(socket.getOutputStream());
         in = new ObjectInputStream(socket.getInputStream());
@@ -67,7 +67,6 @@ public class Client implements Runnable{
 			while(active){
 				//receive input
 				float[] input = (float[]) in.readObject();
-				while(map.locked);
 				if(input[0] == -1) {
 					map.particles.add(new Bullet(new Vector3f(input[1], input[2], input[3]), new Vector3f(input[4], input[5], input[6]), true));
 				}

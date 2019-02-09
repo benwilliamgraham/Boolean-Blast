@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glPolygonOffset;
+import static org.lwjgl.opengl.GL40.*;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import java.awt.image.BufferedImage;
@@ -40,6 +41,13 @@ public class Map {
 		new Vector3f(30, 13, 105)
 	};
 	
+	GUI life;
+	GUI cursor;
+	GUI ammo;
+	GUI win;
+	GUI lose;
+	GUI die;
+	
 	//colors
 	static float lightShade = 0.85f, mediumShade = 0.3f, darkShade = 0.05f;
 	
@@ -51,6 +59,15 @@ public class Map {
 	static Random random = new Random(420);
 	
 	void load(String filename){
+		//load GUI
+		life = new GUI("assets/life.png");
+		cursor = new GUI("assets/cursor.png");
+		ammo = new GUI("assets/ammo.png");
+		win = new GUI("assets/win.png");
+		lose = new GUI("assets/lose.png");
+		die = new GUI("assets/die.png");
+		
+		//load model
 		BufferedImage img = null;
 		try {
 		    img = ImageIO.read(new File(filename));
@@ -310,7 +327,7 @@ public class Map {
 		}
 	}
 	
-	void render(Camera camera, ShaderProgram shaderProgram) {
+	void render(Camera camera, ShaderProgram shaderProgram, ShaderProgram GUIProgram) {
 		locked = true;
 		shaderProgram.start();
 		
@@ -336,6 +353,26 @@ public class Map {
 		for(Particle particle: particles) {
 			particle.render(activeCamera, shaderProgram);
 		}
+		
+		//gui
+		GUIProgram.start();
+		glDisable(GL_DEPTH_TEST);
+		glEnable(GL_BLEND);
+		
+		life.position = new Vector3f(-15, 7.4f, -10);
+		for(int i = 0; i < player.lives; i++) {
+			life.render(camera, GUIProgram);
+			life.position.x += 0.7f;
+		}
+		cursor.position = new Vector3f(0, 0, -10);
+		cursor.render(camera, GUIProgram);
+		ammo.scale.x = Math.min(player.ammo / 5f, 10);
+		ammo.position = new Vector3f(-13 + ammo.scale.x * 0.44f, 7.4f, -10);
+		ammo.render(camera, GUIProgram);
+		
+		glEnable(GL_DEPTH_TEST);
+		glDisable(GL_BLEND);
+		
 		locked = false;
 	}
 }

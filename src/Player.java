@@ -12,14 +12,16 @@ enum Mode{
 
 public class Player {
 	int id;
+	Client client;
 	
 	int lives = 3;
 	
 	int ammo = 30;
 	Mode mode = Mode.PLAY;
 	
-	Player(int id){
+	Player(int id, Client client){
 		this.id = id;
+		this.client = client;
 	}
 	
 	Vector3f position = new Vector3f(0, 0, 0);
@@ -88,13 +90,19 @@ public class Player {
 	
 	void die() {
 		mode = Mode.DIE;
+		position.y = -100;
 		lives -= 1;
+		if(lives == 0) {
+			mode = Mode.LOSE;
+			float[] lose = {666, id};
+			client.sendData(lose);
+		}
 	}
 	
-	void update(Window window, Map map, Client client) {
+	void update(Window window, Map map) {
 		if(mode == Mode.DIE) {
 			if(window.KEY_R) {
-				position = new Vector3f(Map.spawnPoints[0]);
+				position = new Vector3f(Map.spawnPoints[2]);
 				mode = Mode.PLAY;
 			}
 		}

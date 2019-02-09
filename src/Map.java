@@ -30,7 +30,8 @@ public class Map {
 	Block[][][] blocks;
 	
 	float gravity = 0.03f;
-	float friction = 0.11f;
+	float friction = 0.03f;
+	float acceleration = 0.5f; 
 	
 	Vector3f[] spawnPoints = {
 		new Vector3f(59, 3, 53),

@@ -363,16 +363,22 @@ public class Map {
 		glDisable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);
 		
-		life.position = new Vector3f(-15, 7.4f, -10);
-		for(int i = 0; i < player.lives; i++) {
-			life.render(camera, GUIProgram);
-			life.position.x += 0.7f;
+		if(player.mode == Mode.PLAY) {
+			life.position = new Vector3f(-15, 7.4f, -10);
+			for(int i = 0; i < player.lives; i++) {
+				life.render(camera, GUIProgram);
+				life.position.x += 0.7f;
+			}
+			cursor.position = new Vector3f(0, 0, -10);
+			cursor.render(camera, GUIProgram);
+			ammo.scale.x = Math.min(player.ammo / 5f, 10);
+			ammo.position = new Vector3f(-13 + ammo.scale.x * 0.438f, 7.4f, -10);
+			ammo.render(camera, GUIProgram);
 		}
-		cursor.position = new Vector3f(0, 0, -10);
-		cursor.render(camera, GUIProgram);
-		ammo.scale.x = Math.min(player.ammo / 5f, 10);
-		ammo.position = new Vector3f(-13 + ammo.scale.x * 0.438f, 7.4f, -10);
-		ammo.render(camera, GUIProgram);
+		else if(player.mode == Mode.DIE) {
+			die.position = new Vector3f(0, 0, 0.8f);
+			die.render(camera, GUIProgram);
+		}
 		
 		glEnable(GL_DEPTH_TEST);
 		glDisable(GL_BLEND);

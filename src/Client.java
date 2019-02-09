@@ -30,7 +30,7 @@ public class Client implements Runnable{
     	
     public void setup() throws IOException{
     	// Make connection and initialize streams
-    	String serverAddress = "128.237.181.58";
+    	String serverAddress = "128.237.178.223";
         socket = new Socket(serverAddress, 8001);
         out = new ObjectOutputStream(socket.getOutputStream());
         in = new ObjectInputStream(socket.getInputStream());

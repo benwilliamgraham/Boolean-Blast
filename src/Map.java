@@ -24,7 +24,7 @@ public class Map {
 	Model edges;
 	float[] shades;
 	
-	int X = 64, Y = 25, Z = 64;
+	int X = 120, Y = 25, Z = 120;
 	
 	Block[][][] blocks;
 	
@@ -73,7 +73,7 @@ public class Map {
 		
 		int ni = 0;
 		for(int z = 0; z < Z; z++) {
-			for(int y = 0; y < Y; y++) {
+			for(int y = 0; y < Y - 1; y++) {
 				for(int x = 0; x < X; x++) {
 					if(blocks[x][y][z].collides) {
 						//x-
@@ -206,7 +206,7 @@ public class Map {
 		indexList = new ArrayList<Integer>();
 		
 		ni = 0;
-		float es = 0.5f;
+		float es = 0.3f;
 		int sv;
 		for(int z = 0; z < Z - 1; z++) {
 			for(int y = 0; y < Y - 1; y++) {
@@ -283,6 +283,10 @@ public class Map {
 				blocks[(int)(position.x + 0.5f)][(int)(position.y + 0.5f)][(int)(position.z + 0.5f)].collides;
 	}
 	
+	void shadeBlock(Vector3f position, float shade) {
+		blocks[(int)(position.x + 0.5f)][(int)(position.y + 0.5f)][(int)(position.z + 0.5f)].updateShade(shade, this);
+	}
+	
 	void addParticles(Vector3f position, float count, float intensity) {
 		for(int i = 0; i < count; i++) {
 			particles.add(new Particle(new Vector3f(position), intensity, random));
@@ -315,7 +319,7 @@ public class Map {
 		
 		//draw polygons
 		glEnable(GL_POLYGON_OFFSET_FILL);
-		glPolygonOffset(1.0f, 1.0f);
+		glPolygonOffset(1.0f, 0.001f);
 		glBindVertexArray(faces.vao);
 		glDrawElements(GL_TRIANGLES, faces.index_count, GL_UNSIGNED_INT, 0);
 		

@@ -92,10 +92,10 @@ public class Window {
 		
 		//set the OpenGL properties
 		GL.createCapabilities();
-		glClearColor(6.0f / 255f, 6.0f / 255f, 6.0f / 255f, 1.0f);
+		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_LINE_SMOOTH);
-		glLineWidth(2);
+		glLineWidth(0.2f);
 	}
 }

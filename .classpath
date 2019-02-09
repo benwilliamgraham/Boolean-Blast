@@ -14,13 +14,5 @@
 	<classpathentry kind="lib" path="lib/lwjgl 3.2.1/lwjgl-stb.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl 3.2.1/lwjgl.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl 3.2.1/PNGDecoder.jar"/>
-	<classpathentry kind="lib" path="lib/org/lwjgl/openal/AL.java"/>
-	<classpathentry kind="lib" path="lib/org/lwjgl/openal/ALC10.java"/>
-	<classpathentry kind="lib" path="lib/org/lwjgl/openal/ALC11.java"/>
-	<classpathentry kind="lib" path="lib/org/lwjgl/openal/ALCcontext.java"/>
-	<classpathentry kind="lib" path="lib/org/lwjgl/openal/ALCdevice.java"/>
-	<classpathentry kind="lib" path="lib/org/lwjgl/openal/EFXUtil.java"/>
-	<classpathentry kind="lib" path="lib/org/lwjgl/openal/OpenALException.java"/>
-	<classpathentry kind="lib" path="lib/org/lwjgl/openal/Util.java"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

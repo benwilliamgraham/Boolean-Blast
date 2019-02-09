@@ -183,6 +183,7 @@ public class Player {
 					float[] data = {-1, position.x, position.y + 1.4f, position.z, bulletVelocity.x, bulletVelocity.y, bulletVelocity.z};
 					client.sendData(data);
 					shooting = true;
+//					sunAudioPatcher.playShot();
 					ammo -= 1;
 				}
 			} else {

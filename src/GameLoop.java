@@ -2,13 +2,21 @@ import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL40.*;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import org.joml.Vector3f;
 
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
 public class GameLoop {
 
 	public static void main(String[] args) {
+		
+		//connect to server
+		//Client client = new Client();
 		
 		//create and initialize window
 		Window window = new Window();
@@ -21,8 +29,9 @@ public class GameLoop {
 		Map map = new Map("assets/Map1.png");
 		map.initializeItems(window);
 		
+		//run gameloop
 		double lastTime = glfwGetTime();
-		
+				
 		while (!glfwWindowShouldClose(window.id)) {
 			//check events
 			glfwPollEvents();

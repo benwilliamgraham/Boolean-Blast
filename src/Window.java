@@ -12,7 +12,8 @@ public class Window {
 	
 	boolean KEY_UP = false, KEY_DOWN = false, KEY_LEFT = false, KEY_RIGHT = false, 
 			KEY_SPACE = false, KEY_SHIFT = false, 
-			MOUSE_LCLICK = false, MOUSE_RCLICK = false;
+			MOUSE_LCLICK = false, MOUSE_RCLICK = false,
+			MOUSE_LOCKED = false;
 	double MOUSE_X = 0, MOUSE_Y = 0, MOUSE_DELTA_X = 0, MOUSE_DELTA_Y = 0;
 	
 	void init() {
@@ -32,12 +33,18 @@ public class Window {
 		//create the window
 		id = glfwCreateWindow(width, height, "Benjine3D", NULL, NULL);
 		if(id == NULL) throw new RuntimeException("Failed to create the GLFW window");
-		glfwSetWindowPos(id, 40, 40);
 		
 		//setup key callbacks
 		glfwSetKeyCallback(id, (window, key, scancode, action, mods) -> {
 			//TEMP exit
 			if(key == GLFW_KEY_ESCAPE) glfwSetWindowShouldClose(id, true);
+			
+			//move
+			if(key == GLFW_KEY_P && action == GLFW_PRESS) {
+				if(MOUSE_LOCKED) glfwSetInputMode(id, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+				else glfwSetInputMode(id, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+				MOUSE_LOCKED = !MOUSE_LOCKED;
+			}
 			
 			//up
 			if(key == GLFW_KEY_W && action == GLFW_PRESS) KEY_UP = true;
@@ -66,6 +73,7 @@ public class Window {
 		
 		//setup mouse movement callbacks
 		glfwSetInputMode(id, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		MOUSE_LOCKED = true;
 		glfwSetCursorPosCallback(id, (window, xpos, ypos) -> {
 			MOUSE_DELTA_X = xpos - MOUSE_X;
 			MOUSE_DELTA_Y = ypos - MOUSE_Y;

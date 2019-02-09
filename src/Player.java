@@ -12,8 +12,6 @@ public class Player {
 	boolean dead = false;
 	int lives = 3;
 	
-	int ammo = 30;
-	
 	Player(int id){
 		this.id = id;
 	}
@@ -161,7 +159,7 @@ public class Player {
 		
 		//shooting
 		if(window.MOUSE_LCLICK) {
-			if(shooting == false && ammo > 0) {
+			if(shooting == false) {
 				Vector3f bulletVelocity = new Vector3f(
 						(float) (Math.sin(rotation.y) * Math.cos(rotation.x)), 
 						(float) -Math.sin(rotation.x), 
@@ -171,15 +169,9 @@ public class Player {
 				float[] data = {-1, position.x, position.y + 1.4f, position.z, bulletVelocity.x, bulletVelocity.y, bulletVelocity.z};
 				client.sendData(data);
 				shooting = true;
-				ammo -= 1;
 			}
 		} else {
 			shooting = false;
-		}
-		if(window.MOUSE_RCLICK) {
-			if(ammo < 50) {
-				ammo += 1;
-			}
 		}
 		
 		//update camera

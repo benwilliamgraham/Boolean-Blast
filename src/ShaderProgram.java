@@ -12,7 +12,6 @@ public class ShaderProgram {
 	int id;
 	
 	int u_MVP;
-	int u_texture;
 	private FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 	
 	ShaderProgram(String vertexShaderFilename, String fragmentShaderFilename){
@@ -35,7 +34,6 @@ public class ShaderProgram {
 
 	void getUniformLocations() {
 		u_MVP = glGetUniformLocation(id, "u_MVP");
-		u_texture = glGetUniformLocation(id, "u_texture");
 	}
 	
 	void loadFloat(int location, float value) {

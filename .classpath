@@ -31,7 +31,10 @@
 	<classpathentry kind="lib" path="lib/lwjgl 3.2.1/lwjgl-stb-natives-windows.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl 3.2.1/lwjgl-stb.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl 3.2.1/lwjgl.jar"/>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="lib/lwjgl 3.2.1/PNGDecoder.jar"/>
 
+=======
+>>>>>>> parent of 400faec... GUI ready for filming
 	<classpathentry kind="output" path="bin"/>
 </classpath>

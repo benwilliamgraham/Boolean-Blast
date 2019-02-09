@@ -7,6 +7,7 @@ public class AudioPlayer {
 	static AudioClip shot = new AudioClip("assets/SHOT.wav");
 	static AudioClip step_1 = new AudioClip("assets/Step_1.wav");
 	static AudioClip step_2 = new AudioClip("assets/Step_2.wav");
+}
 	
 
 //if(theta == Math.PI/2) {
